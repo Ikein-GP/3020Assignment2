@@ -64,6 +64,7 @@ class Rope
     {
         Rope R = new Rope();
         R.root.Left = R1.root;
+        R.root.LeftChars = R1.Length();
         R.root.Right = R2.root;
         return R;
     } // End of Concatenate
