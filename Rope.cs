@@ -34,7 +34,7 @@ class Rope
 
         // Setting the number of left characters for the current node
         root.Data = S.Length.ToString();
-        root.LeftChars = sub2.Length;
+        root.LeftChars = sub1.Length;
 
         // Check if the halves are less than the max
         if (sub1.Length <= 10 && sub2.Length <= 10) // If so, make them leaf nodes
