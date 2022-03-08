@@ -3,7 +3,7 @@
 class Rope 
 {
     public Node root;
-    private int length=0;
+    private string name="";
 
     // Empty Rope Constructor 
     public Rope() 
@@ -15,7 +15,7 @@ class Rope
     public Rope(string S)
     {
         root = new Node();
-        length = S.Length;
+        root.TotChars = S.Length;
         MakeRope(root, S);
     }
 
@@ -28,24 +28,26 @@ class Rope
     /// <returns></returns>
     private Node MakeRope(Node root, string S)
     {
+
+        // Setting the number of total characters for the current node
+        root.TotChars = S.Length;
+
         // Split the string in half
         string sub1 = S.Substring(0, (S.Length / 2));
         string sub2 = S.Substring((S.Length / 2), S.Length-(S.Length / 2));
-
-        // Setting the number of left characters for the current node
-        root.Data = S.Length.ToString();
-        root.LeftChars = sub1.Length;
 
         // Check if the halves are less than the max
         if (sub1.Length <= 10 && sub2.Length <= 10) // If so, make them leaf nodes
         {
             root.Left = new Node(sub1);
+            root.Left.TotChars = sub1.Length;
             root.Right = new Node(sub2);
+            root.Right.TotChars = sub2.Length;
         }
         else // If not, call the function again for each of the substrings 
         {
-            root.Left = new Node(sub1.Length.ToString());
-            root.Right = new Node(sub2.Length.ToString());
+            root.Left = new Node();
+            root.Right = new Node();
             root.Left = MakeRope(root.Left, sub1);
             root.Right = MakeRope(root.Right, sub2);
         }
@@ -62,11 +64,27 @@ class Rope
     /// <returns>The rope containing the two ropes</returns>
     public Rope Concatenate(Rope R1, Rope R2)
     {
-        Rope R = new Rope();
-        R.root.Left = R1.root;
-        R.root.LeftChars = R1.Length();
-        R.root.Right = R2.root;
-        return R;
+        if (R1.root.TotChars == 0 || R2.root.TotChars == 0)
+        {
+            Console.WriteLine("Error: At least one of the ropes are empty.");
+            return null;
+        } else
+        {
+            if (Math.Abs(GetHeight(R1.root) - GetHeight(R2.root)) > 1)
+            {
+                string S = R1.ToString() + R2.ToString();
+                Console.WriteLine(S);
+                Rope R = new Rope(S);
+                return R;
+            } else
+            {
+                Rope R = new Rope();
+                R.root.Left = R1.root;
+                R.root.TotChars = R1.Length() + R2.Length();
+                R.root.Right = R2.root;
+                return R;
+            }
+        }
     } // End of Concatenate
 
     /// <summary>
@@ -102,12 +120,79 @@ class Rope
     } // End of Delete
 
     /// <summary>
+    /// Finds the index of a given character
+    /// </summary>
+    /// <param name="root"> The root node of the given rope, passed as Rope.root in main</param>
+    /// <param name="c"> The target character to find the first instance of</param>
+    public int IndexOf(Node root, char c)
+    {
+        if (root.TotChars == 0)
+        {
+            return -1;
+        } else
+        {
+            if (root.Left == null && root.Right == null) //check if the current node is a leaf node
+            {
+                for (int i = 0; i < root.Data.Length; i++) //iterate through the data in the leaf node to find the specific index of the target
+                {
+                    if (root.Data[i].Equals(c)) //if the target is found
+                    {
+                        return i; //return the index of the target
+                    }
+                }
+                return -1; //else return -1
+            }
+            else //if the current node is not a leaf
+            {
+                int left = IndexOf(root.Left, c); //recursively call a search of the left child
+                int right = IndexOf(root.Right, c); //recursively call a search of the right child
+                if (left >= 0) //if the target was found in the left node
+                {
+                    return left; //return the location of the target
+                }
+                else if (right == -1) //if the target was not found in the right node
+                {
+                    return -1; //return -1
+                }
+                else //if the target was found in the right node return the target location plus the number of characters to the left
+                {
+                    return (right + root.Left.TotChars);
+                }
+            }
+        }
+    }
+
+    public void Traverse(Node root)
+    {
+        if (root != null)
+        {
+            Traverse(root.Left);
+            if (root.Data != null)
+            {
+                //Console.WriteLine(root.Data);
+                name += root.Data;
+            }
+            Traverse(root.Right);
+        }
+    }
+
+    public override string ToString()
+    {
+        name = "";
+        if (root.TotChars != 0)
+        {
+            Traverse(root);
+        }
+        return name;
+    }
+
+    /// <summary>
     /// Gets the length of the string in the rope
     /// </summary>
     /// <returns>An integer of the length of the string in the rope</returns>
     public int Length()
     {
-        return length;
+        return root.TotChars;
     }// End of Length
 
 
@@ -159,7 +244,7 @@ class Rope
         int floor = height - level;
         int edge = Convert.ToInt32(Math.Pow(2, (Math.Max(floor - 1, 0))));
         int first = Convert.ToInt32(Math.Pow(2, floor)) - 1;
-        int between = Convert.ToInt32(Math.Pow(2, floor + 1)) - 1;
+        int between = Convert.ToInt32(Math.Pow(2, floor + 1)) - 10;
         PrintSpaces(first);
 
         List<Node> newNodes = new List<Node>();
@@ -167,7 +252,7 @@ class Rope
         {
             if (node != null)
             {
-                Console.Write(node.Data + " L: " + node.LeftChars);
+                Console.Write(node.Data + " Tot: " + node.TotChars);
                 newNodes.Add(node.Left);
                 newNodes.Add(node.Right);
             }

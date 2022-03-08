@@ -6,11 +6,19 @@ public static class TestMain
 	{
 		Rope rope0 = new Rope("This is a test");
 		rope0.PrintLevelOrder();
-		Rope rope = new Rope("This is a test rope. Testing123. I am a test. Testing is fun!");
+		Rope rope = new Rope("This_is_a_test_rope._Testing123._I_am_a_test._Testing_is_fun!");
+		//Rope rope = new Rope();
 		rope.PrintLevelOrder();
+		Console.WriteLine("Start Traversal");
+		rope.Traverse(rope.root);
+		int Index = rope.IndexOf(rope.root, 'o');
+		Console.WriteLine("the first o is stored at index {0} of its node", Index);
 		Console.WriteLine(rope.Length());
 		Rope rope1 = new Rope();
-		rope1 = rope1.Concatenate(rope0, rope);
+		if (rope1.Concatenate(rope0, rope) != null)
+		{
+			rope1 = rope1.Concatenate(rope0, rope);
+		}
 		rope1.PrintLevelOrder();
 	}
 }

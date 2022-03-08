@@ -5,17 +5,17 @@ class Node
     public string? Data { get; set; }
     public Node? Left { get; set; }
     public Node? Right { get; set; }
-    public int LeftChars { get; set; }
+    public int TotChars { get; set; }
 
     public Node() 
     {
-        LeftChars = 0;
+        TotChars = 0;
     }
 
     public Node(string data) 
     {
         Data = data;
-        LeftChars = 0;
+        TotChars = 0;
     }
 }
 
