@@ -33,7 +33,7 @@ class Rope
         string sub2 = S.Substring((S.Length / 2), S.Length-(S.Length / 2));
 
         // Setting the number of left characters for the current node
-        root.Data = S.Length.ToString();
+        //root.Data = S.Length.ToString();
         root.LeftChars = sub1.Length;
 
         // Check if the halves are less than the max
@@ -44,8 +44,10 @@ class Rope
         }
         else // If not, call the function again for each of the substrings 
         {
-            root.Left = new Node(sub1.Length.ToString());
-            root.Right = new Node(sub2.Length.ToString());
+            //root.Left = new Node(sub1.Length.ToString());
+            //root.Right = new Node(sub2.Length.ToString());
+            root.Left = new Node();
+            root.Right = new Node();
             root.Left = MakeRope(root.Left, sub1);
             root.Right = MakeRope(root.Right, sub2);
         }
@@ -100,6 +102,51 @@ class Rope
     {
 
     } // End of Delete
+
+    public int IndexOf(Node root, char c)
+    {
+        if (root.Left == null && root.Right == null) //check if the current node is a leaf node
+        {
+            for (int i = 0; i < root.Data.Length; i++) //iterate through the data in the leaf node to find the specific index of the target
+            {
+                if (root.Data[i].Equals(c)) //if the target is found
+                {
+                    return i; //return the index of the target
+                }
+            }
+            return -1; //else return -1
+        }
+        else //if the current node is not a leaf
+        {
+            int left = IndexOf(root.Left, c); //recursively call a search of the left child
+            int right = IndexOf(root.Right, c); //recursively call a search of the right child
+            if (left >= 0) //if the target was found in the left node
+            {
+                return left; //return the location of the target
+            }
+            else if (right == -1) //if the target was not found in the right node
+            {
+                return -1; //return -1
+            }
+            else //if the target was found in the right node return the target location plus the number of characters to the left
+            {
+                return (right + root.LeftChars);
+            }
+        }
+    }
+
+    public void Traverse(Node root) 
+    {
+        if (root != null)
+        {
+            Traverse(root.Left);
+            if (root.Data != null)
+            {
+                Console.WriteLine(root.Data);
+            }
+            Traverse(root.Right);
+        }
+    }
 
     /// <summary>
     /// Gets the length of the string in the rope
@@ -167,7 +214,8 @@ class Rope
         {
             if (node != null)
             {
-                Console.Write(node.Data + " L: " + node.LeftChars);
+                //Console.Write(node.Data + " L: " + node.LeftChars); //commented out for legibility in testing Index, will be changed later
+                Console.Write(node.Data);
                 newNodes.Add(node.Left);
                 newNodes.Add(node.Right);
             }
