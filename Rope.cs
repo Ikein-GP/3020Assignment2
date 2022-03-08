@@ -103,6 +103,11 @@ class Rope
 
     } // End of Delete
 
+    /// <summary>
+    /// Finds the index of a given character
+    /// </summary>
+    /// <param name="root"> The root node of the given rope, passed as Rope.root in main</param>
+    /// <param name="c"> The target character to find the first instance of</param>
     public int IndexOf(Node root, char c)
     {
         if (root.Left == null && root.Right == null) //check if the current node is a leaf node
