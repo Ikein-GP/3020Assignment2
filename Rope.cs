@@ -64,12 +64,12 @@ class Rope
     /// <returns>The rope containing the two ropes</returns>
     public Rope Concatenate(Rope R1, Rope R2)
     {
-        if (R1.root.TotChars == 0 || R2.root.TotChars == 0)
+        if (R2.root.TotChars == 0)
         {
-            Console.WriteLine("Error: At least one of the ropes are empty.");
-            return null;
-        } else
-        {
+            return R1;
+        } else if (R1.root.TotChars == 0) { 
+            return R2;
+        } else {
             if (Math.Abs(GetHeight(R1.root) - GetHeight(R2.root)) > 1)
             {
                 string S = R1.ToString() + R2.ToString();
