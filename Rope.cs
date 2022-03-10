@@ -252,7 +252,7 @@ class Rope
         {
             if (node != null)
             {
-                Console.Write(node.Data + " Tot: " + node.TotChars);
+                Console.Write(node.Data);
                 newNodes.Add(node.Left);
                 newNodes.Add(node.Right);
             }
