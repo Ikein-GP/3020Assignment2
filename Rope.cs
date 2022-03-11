@@ -15,8 +15,12 @@ class Rope
     public Rope(string S)
     {
         root = new Node();
-        root.TotChars = S.Length;
-        MakeRope(root, S);
+        if(S!=null && S != "")
+        {
+            root.TotChars = S.Length;
+            MakeRope(root, S);
+        }
+
     }
 
     /// <summary>
@@ -73,7 +77,7 @@ class Rope
             if (Math.Abs(GetHeight(R1.root) - GetHeight(R2.root)) > 1)
             {
                 string S = R1.ToString() + R2.ToString();
-                Console.WriteLine(S);
+                //Console.WriteLine(S);
                 Rope R = new Rope(S);
                 return R;
             } else
@@ -88,34 +92,148 @@ class Rope
     } // End of Concatenate
 
     /// <summary>
-    /// Splits a rope into two ropes at a given index.
+    /// Splits the rope into two ropes at a given index. The left part will be stored in R1
+    /// and the right half will be stored in R2. The original rope will remain the same.
+    /// This version of Split is in the same format as seen in the assignment 2 details.
+    /// NOTE: the character found at index i will be included with the left split (R1).
     /// </summary>
     /// <param name="i">The index to be split at</param>
     /// <param name="R1">The new rope for the first part of the split</param>
     /// <param name="R2">The new rope for the second part of the split</param>
-    public void Split(int i, Rope R1, Rope R2)
+    public void Split(int i, ref Rope R1, ref Rope R2)
     {
+        String thisString = this.ToString();
+        if (i > 0 && i < this.Length())
+        {
+            
+            String a = thisString.Substring(0, i + 1);
+            String b = thisString.Substring(i + 1);
+            R1 = new Rope(a);
+            R2 = new Rope(b);
+        }
+        else
+        {
+            R1 = new Rope(thisString);
+            R2 = new Rope();
+        }
+
 
     } // End of Split
 
     /// <summary>
-    /// Insert a string into a rope with a given index
+    /// Splits the rope into two parts at a given index and returns a Rope that contains 
+    /// the right part that was split. The reason for this deviation is because this method will
+    /// actually split the original rope and eliminates the need to provide 2 new Ropes as parameters.
+    /// NOTE: the character found at index i will be excluded from the split (right part will contain i+1....n)
+    /// </summary>
+    /// <param name="i">The index to be split at</param>
+    public Rope Split(int i)
+    {
+        Stack<Node> nodeStack = new Stack<Node>(); // to hold the nodes that will be split
+        Node current = root; // to keep track of current node
+
+        if ((i < 0) || (i >= root.TotChars)) return new Rope(); // index out of bounds 
+        else if (current == null) return new Rope(); // rope is empty
+
+        while (current != null && current.Data == null) // if Data is null then there MUST be a left node otherwise we done goofed
+        {
+            if ((i < current.Left.TotChars)) // Right node will be split and move to the left
+            {
+                if (current.Right != null)
+                {
+                    nodeStack.Push(current.Right); // push right subtree to stack
+                    current.Right = null; // sever the right subtree from current
+                }  
+                
+                current = current.Left;
+            }
+            else // subtract index by the number of left chars and move right
+            {
+                i -= (current.Left.TotChars); 
+                current = current.Right;
+            }
+
+        }// end while
+
+        // Now we should be in a leaf node containing the index
+        String leftStr = current.Data.Substring(0, i+1);
+        String rightStr = current.Data.Substring(i+1);
+
+        if (rightStr.Length > 0) // we need to split the string into nodes
+        {
+            current.Data = null;
+            current.Left = new Node(leftStr);
+            current.TotChars = leftStr.Length;
+
+            nodeStack.Push(new Node(rightStr));
+        }
+
+        Rope ropeRight = new Rope();
+        Rope tempRope = new Rope();
+
+
+        while (nodeStack.Count() > 0) 
+        {
+            tempRope.root = nodeStack.Pop();
+            ropeRight = Concatenate(ropeRight, tempRope);
+            tempRope = new Rope();
+        }
+
+        tempRope = new Rope(this.ToString());
+        this.root = tempRope.root;
+
+
+        return ropeRight;
+
+    } // End of Split
+
+    /// <summary>
+    /// Insert a string into the rope at a given index. 
+    /// Note that the inserted string will "push" the character at index i to the right.
+    /// If index is out of range, it will insert at the front/end of rope accordingly
     /// </summary>
     /// <param name="S">The string to be inserted</param>
     /// <param name="i">The integer index where the string needs to be inserted at.</param>
     public void Insert(String S, int i) 
     {
-        Rope R1 = new Rope(S);
+
+        if (S != null || S == "") // do nothing to the rope if S is null of empty
+        {
+            Rope insertRope = new Rope(S);
+            Rope tempRope = new Rope();
+            tempRope.root = this.root;
+
+            if (i <= 0) // Just concatenate at the beggining in this case
+            {
+                tempRope = Concatenate(insertRope, tempRope);
+                this.root = tempRope.root;
+
+            } else if (i >= this.root.TotChars) // concatenate at the end
+            {
+                tempRope = Concatenate(tempRope,insertRope);
+                this.root = tempRope.root;
+            }
+            else // 1 split 2 concatenate
+            {
+                Rope rightRope = this.Split(i - 1); 
+                tempRope = Concatenate(tempRope, insertRope);
+                tempRope = Concatenate(tempRope, rightRope);
+                this.root = tempRope.root;
+            }
+        }
+
         
     } // End of Insert
 
     /// <summary>
-    /// Deletes a substring from the given indexes
+    /// Deletes a substring from the given indexes.
+    /// This method will delete characters starting at i and up to (but not including) j
     /// </summary>
     /// <param name="i">The index of the start of the substring to be deleted</param>
     /// <param name="j">The index of the end of the substring to be deleted</param>
     public void Delete(int i, int j)
     {
+ 
 
     } // End of Delete
 
@@ -252,7 +370,7 @@ class Rope
         {
             if (node != null)
             {
-                Console.Write(node.Data + " Tot: " + node.TotChars);
+                Console.Write("{" + node.Data + " Tot: " + node.TotChars +" }");
                 newNodes.Add(node.Left);
                 newNodes.Add(node.Right);
             }

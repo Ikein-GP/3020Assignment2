@@ -17,5 +17,28 @@ public static class TestMain
 		Rope rope1 = new Rope();
 		rope1 = rope1.Concatenate(rope0, rope);
 		rope1.PrintLevelOrder();
+
+
+
+		Rope rope2 = new Rope("Insert Here: __________");
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
+
+		/*Rope temp1 = new Rope();
+		Rope temp2 = new Rope();
+
+		rope2.Split(10, ref temp1, ref temp2);
+		temp1.PrintLevelOrder();
+		temp2.PrintLevelOrder();
+
+		Rope splitrope = rope2.Split(10);
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
+		Console.WriteLine(splitrope);
+		splitrope.PrintLevelOrder();*/
+
+		rope2.Insert("Avery Chin", 15);
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
 	}
 }

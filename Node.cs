@@ -15,7 +15,7 @@ class Node
     public Node(string data) 
     {
         Data = data;
-        TotChars = 0;
+        TotChars = data.Length;
     }
 }
 
