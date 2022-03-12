@@ -37,8 +37,12 @@ class Rope
         root.TotChars = S.Length;
 
         // Split the string in half
-        string sub1 = S.Substring(0, (S.Length / 2));
-        string sub2 = S.Substring((S.Length / 2), S.Length-(S.Length / 2));
+        string sub1 = S.Substring(0, (S.Length / 2)+1);
+        string sub2 = "";
+        if (S.Length > 1)
+        {
+            sub2 = S.Substring((S.Length / 2) + 1, S.Length - (S.Length / 2) - 1);
+        } 
 
         // Check if the halves are less than the max
         if (sub1.Length <= 10 && sub2.Length <= 10) // If so, make them leaf nodes
@@ -174,14 +178,21 @@ class Rope
 
         while (nodeStack.Count() > 0) 
         {
-            tempRope.root = nodeStack.Pop();
+            Node temp = nodeStack.Pop();
+            if (temp.Data == null)
+            {
+                tempRope.root = temp;
+            } else
+            {
+                tempRope.root.Left = temp;
+            }
             ropeRight = Concatenate(ropeRight, tempRope);
             tempRope = new Rope();
         }
 
-        tempRope = new Rope(this.ToString());
-        this.root = tempRope.root;
-
+        // Optimizing the new ropes
+        ropeRight.CombineSiblings(root);
+        CombineSiblings(root);
 
         return ropeRight;
 
@@ -233,9 +244,162 @@ class Rope
     /// <param name="j">The index of the end of the substring to be deleted</param>
     public void Delete(int i, int j)
     {
- 
+        if (i < j && (i >= 0 && j >= 0) && (i <= this.Length() && j <= this.Length())) // if i >= j or if either i or j are out of bounds, Delete does nothing
+        {
+            Rope tempRope = new Rope();
+
+            if (i == 0) //delete from beginning of rope
+            {
+                if (j == this.Length()) // Delete whole Rope
+                {
+                    this.root = tempRope.root;
+                }
+                else // One split needed. Split from j-1
+                {
+                    tempRope = this.Split(j - 1);
+                    this.root = tempRope.root;
+                }
+            }
+            else if (j == this.Length()) // Split from i-1
+            {
+                this.Split(i - 1);
+            }
+            else // 2 Split 1 concatenate
+            {
+                tempRope = this.Split(i - 1);
+                j -= i; //to account for the split
+                tempRope = tempRope.Split(j - 1);
+                Rope thisRope = new Rope();
+                thisRope.root = this.root;
+
+                thisRope = Concatenate(thisRope, tempRope);
+                this.root = thisRope.root;
+            }
+
+        }// end if
 
     } // End of Delete
+
+    /// <summary>
+    /// Checks if a pair of siblings are less than 10 characters and if so, moves the
+    /// data to its parent and then checks if the rope needs to be rebalanced.
+    /// </summary>
+    /// <param name="parent">The node to check the child character values of</param>
+    private void CombineSiblings(Node parent)
+    {
+        if (parent != null) // Make sure the node isn't null
+        {
+            // Check if the parent node has less than 10 chars and is not the root
+            if (parent.TotChars <= 10 && parent != root && parent.Data == null)
+            {
+                // Set the parent data to an empty string
+                parent.Data = ""; 
+                // Add the children data accordingly (if it exists)
+                if (parent.Left != null) { parent.Data += parent.Left.Data; }
+                if (parent.Right != null) { parent.Data += parent.Right.Data; }
+                // Set the child nodes to null as this node is now a leaf node
+                parent.Left = null;
+                parent.Right = null;
+            } 
+            CombineSiblings(parent.Left); // Check the next node to the left
+            CombineSiblings(parent.Right); // Check the next node to the right
+            // Check if balanced and if optimal for our ropes
+            if (!IsBalanced(root) || !IsOptimal(root))
+            {
+                // Rebalance rope if not balanced or optimal
+                Rope R = new Rope(ToString());
+                root = R.root;
+                R.root = null;
+            }
+        }
+    } // End of CombineSiblings
+
+    /// <summary>
+    /// Checks if the height of the rope is optimal given the fact each leaf has 
+    /// at most 10 characters and knowing the total characters in the rope
+    /// </summary>
+    /// <param name="root">The root of the rope</param>
+    /// <returns>A boolean of whether or not the rope is of optimal height</returns>
+    private bool IsOptimal(Node root)
+    {
+        if(root == null)
+        {
+            return true;
+        } else if (root.TotChars == 0)
+        {
+            return true;
+        } else
+        {
+            int count = 20, // The maximum chars for the second row of the rope
+                height = 2; // Since we start checking at the second row, start height is 2
+            while (root.TotChars > count)
+            {
+                count *= 2; // Multiply count by 2 for the next row max
+                height++; // Increase the height by 1 for the next row
+            }
+            int actHeight = GetHeight(root); // Obtain the actual height of the rope
+            if (height == actHeight) { return true; } // If it matches the optimal height, return true
+            else { return false; } // Else, height is not optimal, return false
+        }
+    } // End of IsOptimal
+
+    /// <summary>
+    /// Returns a string containing characters starting at index i and up to (but not including) j
+    /// </summary>
+    /// <param name="i">The index of the start of the substring</param>
+    /// <param name="j">The index of the end of the substring</param>
+    public string Substring(int i, int j)
+    {
+        if (i < 0 || j < 0 || (i > this.Length() || j > this.Length()))
+        {
+            Console.WriteLine("Error: index is out of bounds");
+            return "";
+        }
+        else if (i < j)
+        {
+            Rope tempRope;
+            String subStr = "";
+            if (i == 0)
+            {
+                if (j == this.Length()) //return string of whole rope
+                {
+                    return this.ToString();
+                }
+                else // split at j-1 and return string of left half
+                {
+                    tempRope = this.Split(j - 1);
+                    subStr = this.ToString();
+                    tempRope = Concatenate(this, tempRope);
+                    this.root = tempRope.root;
+
+                }
+            }
+            else if (j == this.Length()) //Split at i-1 and return string of right half
+            {
+                tempRope = this.Split(i - 1);
+                subStr = tempRope.ToString();
+                tempRope = Concatenate(this, tempRope);
+                this.root = tempRope.root;
+
+            }
+            else
+            {
+                Rope subStrRope;
+                subStrRope = this.Split(i - 1);
+                j -= i; //to account for the split
+                tempRope = subStrRope.Split(j - 1);
+                subStr = subStrRope.ToString();
+
+                subStrRope = Concatenate(this, subStrRope);
+                tempRope = Concatenate(subStrRope, tempRope);
+                this.root = tempRope.root;
+
+            }
+            return subStr;
+
+        }
+        return "";
+    }// End of Substring
 
     /// <summary>
     /// Finds the index of a given character
@@ -278,9 +442,36 @@ class Rope
                 }
             }
         }
-    }
+    }// End of IndexOf
 
-    public void Traverse(Node root)
+    /// <summary>
+    /// Returns the character at a certain index
+    /// </summary>
+    /// <param name="root">Current node to check (start at root)</param>
+    /// <param name="index">The index in the string to find</param>
+    /// <returns></returns>
+    public char CharAt(Node root, int index)
+    {
+        if (root.Left != null && index >= root.Left.TotChars && root.Right != null)
+        {
+            return CharAt(root.Right, (index - root.Left.TotChars));
+        }
+        if (root.Left != null)
+        {
+            return CharAt(root.Left, index);
+        }
+        if (root.Data != null && index < root.TotChars) { return root.Data[index]; }
+        else {
+            Console.WriteLine("Error: Invalid index.");
+            return ' '; 
+        }   
+    }// End of CharAt
+
+    /// <summary>
+    /// Private method to traverse the rope for ToString
+    /// </summary>
+    /// <param name="root"></param>
+    private void Traverse(Node root)
     {
         if (root != null)
         {
@@ -292,8 +483,12 @@ class Rope
             }
             Traverse(root.Right);
         }
-    }
+    }// End of Traverse
 
+    /// <summary>
+    /// Overrides the ToString method to return the string stored in the rope
+    /// </summary>
+    /// <returns>The string being stored in the rope</returns>
     public override string ToString()
     {
         name = "";
@@ -302,7 +497,7 @@ class Rope
             Traverse(root);
         }
         return name;
-    }
+    }// End of ToString
 
     /// <summary>
     /// Gets the length of the string in the rope
@@ -313,11 +508,8 @@ class Rope
         return root.TotChars;
     }// End of Length
 
-
-    //-----------------------------------------------------------------------------------
-    // Stupid printing for testing
-    //-----------------------------------------------------------------------------------
     // Calculates and returns the height of the tree
+    // Note: pulled from 2020 with Sri
     public int GetHeight(Node current)
     {
         int height = 0;
@@ -331,6 +523,38 @@ class Rope
         return height;
 
     }// end GetHeight
+
+    /// <summary>
+    /// Private method to check if the rope is balanced
+    /// </summary>
+    /// <param name="node">The current node to check (start at root)</param>
+    /// <returns>A boolean of whether or not the rope is balanced</returns>
+    /// Repurposed from: https://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/
+    private bool IsBalanced(Node node)
+    {
+        //If tree is empty then tree is balanced
+        if (node == null)
+        {
+            return true;
+        }
+
+        // Get the height of left and right sub trees
+        int leftHeight = GetHeight(node.Left);
+        int rightHeight = GetHeight(node.Right);
+
+        // Check if each subtree is balanced and it's subtrees
+        if (Math.Abs(leftHeight - rightHeight) <= 1 && IsBalanced(node.Left)
+            && IsBalanced(node.Right))
+        {
+            return true;
+        }
+
+        return false;
+    } // End of IsBalanced
+
+    //-----------------------------------------------------------------------------------
+    // Stupid printing for testing
+    //-----------------------------------------------------------------------------------
 
     // Calculates and returns the balance factor of the tree to determine how it needs to be balanced
     public int Balance_factor(Node current)
