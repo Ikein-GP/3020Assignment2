@@ -162,6 +162,23 @@ class Rope
         }
     }
 
+    public char CharAt(Node root, int index) {
+        if (root.Left != null && index >= root.Left.TotChars && root.Right != null) {
+            return CharAt(root.Right, (index - root.Left.TotChars));
+                    
+                 }
+  
+
+
+    if (root.Left != null) {
+
+            return CharAt(root.Left, index);
+    }
+
+
+           return root.Data[index];
+    }
+
     public void Traverse(Node root)
     {
         if (root != null)

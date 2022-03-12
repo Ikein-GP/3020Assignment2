@@ -28,5 +28,8 @@ public static class TestMain
 		Console.WriteLine("the conctinated rope is:");
 		rope1 = rope1.Concatenate(rope0, rope);
 		rope1.PrintLevelOrder();
+		Console.WriteLine("enter the index you'd like to veiw:");
+		Console.WriteLine("The letter at that index is {0}",
+		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));
 	}
 }
