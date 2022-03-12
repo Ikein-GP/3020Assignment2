@@ -40,5 +40,14 @@ public static class TestMain
 		rope2.Insert("Avery Chin", 15);
 		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();
+
+		Rope rope3 = new Rope("xxxDELETE");
+		Console.WriteLine(rope3);
+		rope3.PrintLevelOrder();
+
+		Console.WriteLine(rope3.Substring(6,900));
+		Console.WriteLine(rope3);
+		rope3.PrintLevelOrder();
+
 	}
 }

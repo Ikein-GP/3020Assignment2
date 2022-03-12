@@ -214,7 +214,7 @@ class Rope
                 this.root = tempRope.root;
 
             }
-            else if (i >= this.root.TotChars) // concatenate at the end
+            else if (i >= this.Length()) // concatenate at the end
             {
                 tempRope = Concatenate(tempRope, insertRope);
                 this.root = tempRope.root;
@@ -227,8 +227,6 @@ class Rope
                 this.root = tempRope.root;
             }
         }
-
-
     } // End of Insert
 
     /// <summary>
@@ -239,9 +237,100 @@ class Rope
     /// <param name="j">The index of the end of the substring to be deleted</param>
     public void Delete(int i, int j)
     {
+        if (i < j && (i>=0 && j>=0) && (i<=this.Length() && j<=this.Length())) // if i >= j or if either i or j are out of bounds, Delete does nothing
+        {
+            Rope tempRope = new Rope();
 
+            if (i == 0) //delete from beginning of rope
+            {
+                if(j == this.Length()) // Delete whole Rope
+                {
+                    this.root = tempRope.root;
+                }
+                else // One split needed. Split from j-1
+                {
+                    tempRope = this.Split(j-1);
+                    this.root = tempRope.root;
+                }
+            }
+            else if (j== this.Length()) // Split from i-1
+            {
+                this.Split(i-1);
+            }
+            else // 2 Split 1 concatenate
+            {
+                tempRope = this.Split(i-1);
+                j -= i; //to account for the split
+                tempRope = tempRope.Split(j-1);
+                Rope thisRope = new Rope();
+                thisRope.root = this.root;
+
+                thisRope = Concatenate(thisRope, tempRope);
+                this.root = thisRope.root;
+            }
+
+        }// end if
 
     } // End of Delete
+
+    /// <summary>
+    /// Returns a string containing characters starting at index i and up to (but not including) j
+    /// </summary>
+    /// <param name="i">The index of the start of the substring</param>
+    /// <param name="j">The index of the end of the substring</param>
+    public string Substring(int i, int j)
+    {
+        if (i < 0 || j < 0 || (i > this.Length() || j > this.Length())) 
+        {
+            Console.WriteLine("Error: index is out of bounds");
+            return "";
+        }
+        else if (i < j) 
+        {
+            Rope tempRope;
+            String subStr = "";
+            if (i == 0)
+            {
+                if (j == this.Length()) //return string of whole rope
+                {
+                    return this.ToString();
+                }
+                else // split at j-1 and return string of left half
+                {
+                    tempRope = this.Split(j - 1);
+                    subStr = this.ToString();
+                    tempRope = Concatenate(this, tempRope);
+                    this.root = tempRope.root;
+
+                }
+            }
+            else if (j== this.Length()) //Split at i-1 and return string of right half
+            {
+                tempRope = this.Split(i - 1);
+                subStr = tempRope.ToString();
+                tempRope = Concatenate(this, tempRope);
+                this.root = tempRope.root;
+
+            }
+            else
+            {
+                Rope subStrRope;
+                subStrRope = this.Split(i - 1);
+                j -= i; //to account for the split
+                tempRope = subStrRope.Split(j - 1);
+                subStr = subStrRope.ToString();
+
+                subStrRope = Concatenate(this, subStrRope);
+                tempRope = Concatenate(subStrRope, tempRope);
+                this.root = tempRope.root;
+     
+            }
+            return subStr;
+
+        }
+        return "";
+    }
+
 
     /// <summary>
     /// Finds the index of a given character
