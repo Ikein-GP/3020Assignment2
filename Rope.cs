@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Team: Greg Prouty, Bradley Primeau, Avery Chin, Megan Risebrough
+using System;
 
 class Rope 
 {
