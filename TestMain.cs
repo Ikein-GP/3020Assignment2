@@ -32,8 +32,12 @@ public static class TestMain
 		rope = rope.Concatenate(rope0, rope);
 		rope.PrintLevelOrder();
 
-		// One Empty
+		// First One Empty
 		rope = rope.Concatenate(rope0, rope2);
+		rope.PrintLevelOrder();
+
+		// Second One Empty
+		rope = rope.Concatenate(rope2, rope0);
 		rope.PrintLevelOrder();
 
 		// None Empty
@@ -113,11 +117,12 @@ public static class TestMain
 		/* --------------------------------------------------------
 		| CharAt Tests
 		---------------------------------------------------------*/
-
+		/*
 		rope.PrintLevelOrder();
 		Console.WriteLine("enter the index you'd like to veiw:");
 		Console.WriteLine("The letter at that index is {0}",
 		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));
+		*/
 
 		/* --------------------------------------------------------
 		| Insert Tests
@@ -142,7 +147,7 @@ public static class TestMain
 		Console.WriteLine(rope0.Length());
 
 		// Not Empty rope
-		Console.WriteLine(rope.Length());
+		Console.WriteLine(rope2.Length());
 
 		/* --------------------------------------------------------
 		| PrintRope Tests
