@@ -327,8 +327,8 @@ class Rope
         }
     }// end PrintSpaces
 
-   public void Reverse(Rope old) {
-        string temp = old.ToString();
+   public void Reverse() {
+        string temp = this.ToString();
         char[] chars = temp.ToCharArray();
         Array.Reverse(chars);
         string New = new string(chars);

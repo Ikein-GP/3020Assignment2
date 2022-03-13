@@ -31,6 +31,6 @@ public static class TestMain
 		Console.WriteLine("enter the index you'd like to veiw:");
 		Console.WriteLine("The letter at that index is {0}",
 		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));
-		rope.Reverse(rope);
+		rope.Reverse();
 	}
 }
