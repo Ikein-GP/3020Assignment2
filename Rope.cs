@@ -515,7 +515,7 @@ class Rope
     public void Reverse()
     {
         //pass the root to the method that does the work
-        root = ReverseHelp(root);
+        ReverseHelp(root);
 
     }// End of Reverse 
 
