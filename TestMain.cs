@@ -29,7 +29,7 @@ public static class TestMain
 		---------------------------------------------------------*/
 
 		// Both Empty
-		rope = rope.Concatenate(rope0, rope);
+		rope = rope.Concatenate(rope1, rope2);
 		rope.PrintLevelOrder();
 
 		// First One Empty
