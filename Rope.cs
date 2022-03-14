@@ -509,6 +509,46 @@ class Rope
         return root.TotChars;
     }// End of Length
 
+    /// <summary>
+    /// reverses the rope
+    /// </summary>
+    public void Reverse()
+    {
+        //pass the root to the method that does the work
+        root = ReverseHelp(root);
+
+    }// End of Reverse 
+
+    /// <summary>
+    /// Called by reverse, does the actual work of reversing
+    /// </summary>
+    /// <param name="start">The current node (starts at root)</param>
+    /// <returns>The modified root node</returns>
+    private Node ReverseHelp(Node start)
+    {
+        //if the node is a leaf node, reverse it's contents
+        if (start != null && start.Data != null)
+        {
+            char[] chars = start.Data.ToCharArray();
+            Array.Reverse(chars);
+            start.Data = new string(chars);
+        }
+        if (start == null)
+        {
+            return null;// if the node doesnt exist do nothing
+        }
+        //recursively call the method on the left and right children of the node
+        Node left = ReverseHelp(start.Left);
+        Node right = ReverseHelp(start.Right);
+        //make the new left child the former right child
+        start.Left = right;
+        //make the new right child the former left child
+        start.Right = left;
+        //return the node with it's new modifications
+        return start;
+
+    } // End of ReverseHelp
+
     // Calculates and returns the height of the tree
     // Note: pulled from 2020 with Sri
     public int GetHeight(Node current)
