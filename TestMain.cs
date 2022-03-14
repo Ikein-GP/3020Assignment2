@@ -139,6 +139,10 @@ public static class TestMain
 		| Reverse Tests
 		---------------------------------------------------------*/
 
+		rope2.PrintLevelOrder();
+		rope2.Reverse();
+		rope2.PrintLevelOrder();
+
 		/* --------------------------------------------------------
 		| Length Tests
 		---------------------------------------------------------*/
