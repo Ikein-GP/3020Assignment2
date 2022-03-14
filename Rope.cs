@@ -50,8 +50,11 @@ class Rope
         {
             root.Left = new Node(sub1);
             root.Left.TotChars = sub1.Length;
-            root.Right = new Node(sub2);
-            root.Right.TotChars = sub2.Length;
+            if (sub2.Length > 0)
+            {
+                root.Right = new Node(sub2);
+                root.Right.TotChars = sub2.Length;
+            }
         }
         else // If not, call the function again for each of the substrings 
         {
@@ -91,7 +94,12 @@ class Rope
                 R.root.Left = R1.root;
                 R.root.TotChars = R1.Length() + R2.Length();
                 R.root.Right = R2.root;
-                return R;
+                if (IsOptimal(R.root)) { return R; }
+                else
+                {
+                    Rope R3 = new Rope(R.ToString());
+                    return R3;
+                }
             }
         }
     } // End of Concatenate
