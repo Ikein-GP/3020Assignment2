@@ -32,5 +32,6 @@ public static class TestMain
 		Console.WriteLine("The letter at that index is {0}",
 		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));
 		rope.Reverse();
+		rope.PrintLevelOrder();
 	}
 }

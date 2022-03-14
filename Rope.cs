@@ -163,19 +163,21 @@ class Rope
     }
 
     public char CharAt(Node root, int index) {
+        //if the node has two children, and the index is greater than the number of letters to the left...
         if (root.Left != null && index >= root.Left.TotChars && root.Right != null) {
+            //... go right and subract the number of letters to the left from the taret index
             return CharAt(root.Right, (index - root.Left.TotChars));
                     
-                 }
+        }
   
 
-
+    //otherwise if the index isn't greater than the number of letters to the left, and a left child exists go left
     if (root.Left != null) {
 
             return CharAt(root.Left, index);
     }
 
-
+           //when no children exist, return the character in the space indicated by index
            return root.Data[index];
     }
 
@@ -327,12 +329,36 @@ class Rope
         }
     }// end PrintSpaces
 
+   //method to reverse the rope without passing a method
    public void Reverse() {
-        string temp = this.ToString();
-        char[] chars = temp.ToCharArray();
-        Array.Reverse(chars);
-        string New = new string(chars);
-        Console.WriteLine(New);
+        //pass the root to the method that does the work
+        ReverseHelp(this.root);
+        
+    }
+    //method to do the actual work of reversing
+    private Node ReverseHelp(Node start)
+    {
+        //if the node is a leaf node, reverse it's contents
+        if (start != null && start.Data != null)
+        {
+            char[] chars = start.Data.ToCharArray();
+            Array.Reverse(chars);
+            start.Data = new string(chars);
+        }
+        if (start == null)
+        {
+            return null;// if the node doesnt exist do nothing
+        }
+        //recursively call the method on the left and right children of the node
+        Node left = ReverseHelp(start.Left);
+        Node right = ReverseHelp(start.Right);
+        //make the new left child the former right child
+        start.Left = right;
+        //make the new right child the former left child
+        start.Right = left;
+       //return the node with it's new modifications
+        return start;
+        
     }
 
 }
