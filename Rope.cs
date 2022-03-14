@@ -518,6 +518,35 @@ class Rope
     }// End of Length
 
     /// <summary>
+    /// Called by the PrintRope method and traverses the rope in order,
+    /// printing each node data
+    /// </summary>
+    /// <param name="current">The current node to traverse</param>
+    private void InOrder(Node current)
+    {
+        // If current node is null, return
+        if (current == null)
+        {
+            return;
+        }
+
+        InOrder(current.Left); // Recursively call the left node
+
+        // Print the node data
+        Console.Write("{" + current.Data + " Tot: " + current.TotChars + " } ");
+
+        InOrder(current.Right); // Recursively call the right node
+    }// End of InOrder
+
+    /// <summary>
+    /// Calls InOrder to traverse the rope in order and print rope accordingly.
+    /// </summary>
+    public void PrintRope()
+    {
+        InOrder(root);
+    }// End of PrintRope
+
+    /// <summary>
     /// reverses the rope
     /// </summary>
     public void Reverse()

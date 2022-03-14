@@ -139,9 +139,13 @@ public static class TestMain
 		| Reverse Tests
 		---------------------------------------------------------*/
 
+		/*
+		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();
 		rope2.Reverse();
+		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();
+		*/
 
 		/* --------------------------------------------------------
 		| Length Tests
@@ -156,5 +160,8 @@ public static class TestMain
 		/* --------------------------------------------------------
 		| PrintRope Tests
 		---------------------------------------------------------*/
+
+		rope2.PrintLevelOrder();
+		rope2.PrintRope();
 	}
 }
