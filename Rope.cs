@@ -194,18 +194,52 @@ class Rope
             } else
             {
                 tempRope.root.Left = temp;
+                tempRope.root.TotChars = temp.Data.Length;
             }
             ropeRight = Concatenate(ropeRight, tempRope);
             tempRope = new Rope();
         }
 
+        // Correct TotChars After Split
+        this.CorrectTotChars(this.root);
+
         // Optimizing the new ropes
-        ropeRight.CombineSiblings(root);
-        CombineSiblings(root);
+        ropeRight.CombineSiblings(ropeRight.root);
+        CombineSiblings(this.root);
 
         return ropeRight;
 
     } // End of Split
+
+    /// <summary>
+    /// corrects the TotChars of a rope right after a split
+    /// </summary>
+    /// <param name="root">root of a rope</param>
+    private void CorrectTotChars(Node root)
+    {
+        if (root != null)
+        {
+            CorrectTotChars(root.Left);
+            CorrectTotChars(root.Right);
+
+            if (root.Data == null)
+            {
+                if (root.Right != null)
+                {
+                    root.TotChars = root.Left.TotChars + root.Right.TotChars;
+                }
+                else
+                {
+                    root.TotChars = root.Left.TotChars;
+                }
+            }
+            else
+            {
+                root.TotChars = root.Data.Length;
+            }
+        }
+    }// end CorrectTotChars
+
 
     /// <summary>
     /// Insert a string into the rope at a given index. 

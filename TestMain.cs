@@ -8,7 +8,7 @@ public static class TestMain
 		/* --------------------------------------------------------
 		| Rope Constructor Tests
 		---------------------------------------------------------*/
-		// Test 0 parameter constructor
+		/*// Test 0 parameter constructor
 		Rope rope = new Rope();
 		rope.PrintLevelOrder();
 
@@ -22,13 +22,13 @@ public static class TestMain
 
 		// Test string of several characters
 		Rope rope2 = new Rope("This_is_a_test_rope._Testing123.");
-		rope2.PrintLevelOrder();
+		rope2.PrintLevelOrder();*/
 
 		/* --------------------------------------------------------
 		| Concatenate Tests
 		---------------------------------------------------------*/
 
-		// Both Empty
+		/*// Both Empty
 		rope = rope.Concatenate(rope1, rope2);
 		rope.PrintLevelOrder();
 
@@ -42,17 +42,17 @@ public static class TestMain
 
 		// None Empty
 		rope = rope.Concatenate(rope, rope2);
-		rope.PrintLevelOrder();
+		rope.PrintLevelOrder();*/
 
 		/* --------------------------------------------------------
 		| Split Tests
 		---------------------------------------------------------*/
 
-		/*Rope rope3 = new Rope("Insert Here: __________");
+		Rope rope3 = new Rope("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		Console.WriteLine(rope3);
 		rope3.PrintLevelOrder();
 
-		Rope temp1 = new Rope();
+		/*Rope temp1 = new Rope();
 		Rope temp2 = new Rope();
 
 		// First Split method of invalid index
@@ -67,7 +67,9 @@ public static class TestMain
 		Console.WriteLine(temp1);
 		temp1.PrintLevelOrder();
 		Console.WriteLine(temp2);
-		temp2.PrintLevelOrder();
+		temp2.PrintLevelOrder();*/
+
+		//-----------------------------------------------------------
 
 		// Second Split method of invalid index
 		Console.WriteLine(rope3);
@@ -79,11 +81,11 @@ public static class TestMain
 
 		// Second Split method of valid index
 		Console.WriteLine(rope3);
-		Rope splitrope2 = rope3.Split(10);
+		Rope splitrope2 = rope3.Split(1);
 		Console.WriteLine(rope3);
 		rope3.PrintLevelOrder();
 		Console.WriteLine(splitrope2);
-		splitrope2.PrintLevelOrder(); */
+		splitrope2.PrintLevelOrder(); 
 
 		/* --------------------------------------------------------
 		| Insert Tests
@@ -133,7 +135,7 @@ public static class TestMain
 		---------------------------------------------------------*/
 
 		// Valid index
-		Console.WriteLine("the first o is stored at index {0}", rope.IndexOf(rope.root, 'o'));
+		//Console.WriteLine("the first o is stored at index {0}", rope.IndexOf(rope.root, 'o'));
 
 		/* --------------------------------------------------------
 		| Reverse Tests
@@ -152,16 +154,16 @@ public static class TestMain
 		---------------------------------------------------------*/
 
 		// Empty rope
-		Console.WriteLine(rope0.Length());
+		/*Console.WriteLine(rope0.Length());
 
 		// Not Empty rope
-		Console.WriteLine(rope2.Length());
+		Console.WriteLine(rope2.Length());*/
 
 		/* --------------------------------------------------------
 		| PrintRope Tests
 		---------------------------------------------------------*/
 
-		rope2.PrintLevelOrder();
-		rope2.PrintRope();
+		/*rope2.PrintLevelOrder();
+		rope2.PrintRope();*/
 	}
 }
