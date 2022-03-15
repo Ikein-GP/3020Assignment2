@@ -201,11 +201,11 @@ class Rope
         }
 
         // Correct TotChars After Split
-        this.CorrectTotChars(this.root);
+        CorrectTotChars(root);
 
         // Optimizing the new ropes
         ropeRight.CombineSiblings(ropeRight.root);
-        CombineSiblings(this.root);
+        this.CombineSiblings(this.root);
 
         return ropeRight;
 
@@ -335,14 +335,27 @@ class Rope
             // Check if the parent node has less than 10 chars and is not the root
             if (parent.TotChars <= 10 && parent != root && parent.Data == null)
             {
-                // Set the parent data to an empty string
-                parent.Data = ""; 
                 // Add the children data accordingly (if it exists)
-                if (parent.Left != null) { parent.Data += parent.Left.Data; }
-                if (parent.Right != null) { parent.Data += parent.Right.Data; }
-                // Set the child nodes to null as this node is now a leaf node
-                parent.Left = null;
-                parent.Right = null;
+                if (parent.Left != null) 
+                {
+                    if (parent.Left.Data != null) 
+                    { 
+                        parent.Data += parent.Left.Data; 
+                    } 
+                }
+                if (parent.Right != null)
+                {
+                    if (parent.Right.Data != null)
+                    {
+                        parent.Data += parent.Right.Data;
+                    }
+                }
+                if(parent.Data != null)
+                {
+                    // Set the child nodes to null as this node is now a leaf node
+                    parent.Left = null;
+                    parent.Right = null;
+                }
             } 
             CombineSiblings(parent.Left); // Check the next node to the left
             CombineSiblings(parent.Right); // Check the next node to the right
