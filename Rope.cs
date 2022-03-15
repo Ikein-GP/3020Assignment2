@@ -714,7 +714,7 @@ class Rope
 
     }// end PrintLevelOrder
 
-    // Print tree repurposed from https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.exists?view=netcore-3.1
+    // Print tree repurposed from https://stackoverflow.com/questions/13484943/print-a-binary-tree-in-a-pretty-way
     // Displays the tree like how it would be drawn
     public void PrintGivenLevel(List<Node> nodes, int level, int height)
     {
