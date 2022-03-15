@@ -48,7 +48,7 @@ public static class TestMain
 		| Split Tests
 		---------------------------------------------------------*/
 
-		Rope rope3 = new Rope("A");
+		Rope rope3 = new Rope("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		Console.WriteLine(rope3);
 		rope3.PrintLevelOrder();
 
@@ -91,7 +91,11 @@ public static class TestMain
 		| Insert Tests
 		---------------------------------------------------------*/
 
-		/*rope2.Insert("Avery Chin", 15);
+		/*Rope rope2 = new Rope("INSERT HERE: ");
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
+
+		rope2.Insert("XXXXX", 11);
 		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();*/
 
@@ -99,22 +103,49 @@ public static class TestMain
 		| Delete Tests
 		---------------------------------------------------------*/
 
+		Rope rope2 = new Rope("XxxxDELETExxxX");
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
+
+		rope2.Delete(0, 4);
+		Console.WriteLine(rope2);
+		rope2.PrintLevelOrder();
 		/* --------------------------------------------------------
 		| Substring Tests
 		---------------------------------------------------------*/
-		/*Rope rope4 = new Rope("xxxDELETE");
+		Rope rope4 = new Rope("xxxDELETE");
 		Console.WriteLine(rope4);
 		rope4.PrintLevelOrder();
 
-		// Invalid index
+		// Invalid index - 1
+		Console.WriteLine(rope4.Substring(-6, 9));
+		Console.WriteLine(rope4);
+		rope4.PrintLevelOrder();
+
+		// Invalid index - 2
 		Console.WriteLine(rope4.Substring(6, 900));
 		Console.WriteLine(rope4);
 		rope4.PrintLevelOrder();
 
-		// Valid index
+		// Technically valid index - 1
+		Console.WriteLine(rope4.Substring(9, 6));
+		Console.WriteLine(rope4);
+		rope4.PrintLevelOrder();
+
+		// Technically Valid index - 2
+		Console.WriteLine(rope4.Substring(1, 1));
+		Console.WriteLine(rope4);
+		rope4.PrintLevelOrder();
+
+		// Valid index - 1
 		Console.WriteLine(rope4.Substring(6, 9));
 		Console.WriteLine(rope4);
-		rope4.PrintLevelOrder();*/
+		rope4.PrintLevelOrder();
+
+		// Valid index - 2
+		Console.WriteLine(rope4.Substring(0, 9));
+		Console.WriteLine(rope4);
+		rope4.PrintLevelOrder();
 
 		/* --------------------------------------------------------
 		| CharAt Tests
@@ -129,6 +160,8 @@ public static class TestMain
 		/* --------------------------------------------------------
 		| Insert Tests
 		---------------------------------------------------------*/
+
+
 
 		/* --------------------------------------------------------
 		| IndexOf Tests
@@ -148,7 +181,7 @@ public static class TestMain
 		rope2.Reverse();
 		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();*/
-		
+
 
 		/* --------------------------------------------------------
 		| Length Tests
@@ -164,8 +197,8 @@ public static class TestMain
 		| PrintRope Tests
 		---------------------------------------------------------*/
 
-		/*rope2.PrintLevelOrder();
-		rope2.PrintRope();*/
+		/*rope.PrintLevelOrder();
+		rope.PrintRope();*/
 
 		/* --------------------------------------------------------
 		| Opimization Tests
