@@ -48,7 +48,7 @@ public static class TestMain
 		| Split Tests
 		---------------------------------------------------------*/
 
-		Rope rope3 = new Rope("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		Rope rope3 = new Rope("A");
 		Console.WriteLine(rope3);
 		rope3.PrintLevelOrder();
 
@@ -81,11 +81,11 @@ public static class TestMain
 
 		// Second Split method of valid index
 		Console.WriteLine(rope3);
-		Rope splitrope2 = rope3.Split(1);
+		Rope splitrope2 = rope3.Split(0);
 		Console.WriteLine(rope3);
 		rope3.PrintLevelOrder();
 		Console.WriteLine(splitrope2);
-		splitrope2.PrintLevelOrder(); 
+		splitrope2.PrintLevelOrder();
 
 		/* --------------------------------------------------------
 		| Insert Tests
@@ -119,12 +119,12 @@ public static class TestMain
 		/* --------------------------------------------------------
 		| CharAt Tests
 		---------------------------------------------------------*/
-		/*
+		/*Rope rope = new Rope("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		rope.PrintLevelOrder();
 		Console.WriteLine("enter the index you'd like to veiw:");
 		Console.WriteLine("The letter at that index is {0}",
-		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));
-		*/
+		rope.CharAt(rope.root, Convert.ToInt32(Console.ReadLine())));*/
+
 
 		/* --------------------------------------------------------
 		| Insert Tests
@@ -135,19 +135,20 @@ public static class TestMain
 		---------------------------------------------------------*/
 
 		// Valid index
-		//Console.WriteLine("the first o is stored at index {0}", rope.IndexOf(rope.root, 'o'));
+		//Rope rope = new Rope("ABCabcABCabc");
+		//Console.WriteLine("the first A is stored at index {0}", rope.IndexOf(rope.root, 'A'));
 
 		/* --------------------------------------------------------
 		| Reverse Tests
 		---------------------------------------------------------*/
 
-		/*
+		/*Rope rope2 = new Rope("ab");
 		Console.WriteLine(rope2);
 		rope2.PrintLevelOrder();
 		rope2.Reverse();
 		Console.WriteLine(rope2);
-		rope2.PrintLevelOrder();
-		*/
+		rope2.PrintLevelOrder();*/
+		
 
 		/* --------------------------------------------------------
 		| Length Tests
@@ -165,5 +166,18 @@ public static class TestMain
 
 		/*rope2.PrintLevelOrder();
 		rope2.PrintRope();*/
+
+		/* --------------------------------------------------------
+		| Opimization Tests
+		---------------------------------------------------------*/
+		/*Rope r1 = new Rope("a");
+		Rope r2 = new Rope("xxxxxxxxxxxxxxxxxxxx");
+		r2.Split(5);
+
+		r1.PrintLevelOrder();
+		r2.PrintLevelOrder();
+
+		r1 = r1.Concatenate(r1, r2);
+		r1.PrintLevelOrder();*/
 	}
 }

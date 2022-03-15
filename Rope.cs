@@ -508,6 +508,11 @@ class Rope
     /// <returns></returns>
     public char CharAt(Node root, int index)
     {
+        if (index < 0)
+        {
+            Console.WriteLine("Error: Invalid index.");
+            return ' ';
+        }
         if (root.Left != null && index >= root.Left.TotChars && root.Right != null)
         {
             return CharAt(root.Right, (index - root.Left.TotChars));
@@ -598,8 +603,15 @@ class Rope
     /// </summary>
     public void Reverse()
     {
+        //deal with the case where there is only a left child
+        if ((this.root.Right == null) && (this.root.Left != null))
+        {
+            char[] chars = root.Left.Data.ToCharArray();
+            Array.Reverse(chars);
+            root.Left.Data = new string(chars);
+        }
         //pass the root to the method that does the work
-        ReverseHelp(root);
+        else { ReverseHelp(root); }
 
     }// End of Reverse 
 
